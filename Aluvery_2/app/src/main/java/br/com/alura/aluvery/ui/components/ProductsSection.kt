@@ -1,8 +1,8 @@
 package br.com.alura.aluvery.ui.components
 
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,10 +17,11 @@ import br.com.alura.aluvery.ui.theme.AluveryTheme
 
 @Composable
 fun ProductsSection(
+    modifier: Modifier = Modifier,
     title: String,
     products: List<Product>
 ) {
-    Column {
+    Column(modifier = modifier) {
         Text(
             text = title,
             Modifier.padding(
@@ -30,20 +31,18 @@ fun ProductsSection(
             fontSize = 20.sp,
             fontWeight = FontWeight(400)
         )
-        Row(
+        LazyRow(
             Modifier
                 .padding(
                     top = 8.dp
                 )
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            Spacer(Modifier)
-            for (p in products) {
+            items(products) { p ->
                 ProductItem(product = p)
             }
-            Spacer(Modifier)
         }
     }
 }
@@ -53,7 +52,7 @@ fun ProductsSection(
 private fun ProductsSectionPreview() {
     AluveryTheme {
         Surface {
-            ProductsSection("Promoções", products = sampleProducts)
+            ProductsSection(title = "Promoções", products = sampleProducts)
         }
     }
 }
